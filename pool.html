@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Ball Pool Game</title>
+    <link rel="stylesheet" href="pool-style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎱 8 Ball Pool</h1>
+        
+        <div class="game-info">
+            <div class="info-section">
+                <span id="playerTurn">Player 1's Turn</span>
+                <span id="gameStatus">Ready to shoot</span>
+            </div>
+            <div class="info-section">
+                <button id="resetBtn" class="btn-reset">New Game</button>
+                <button id="powerBtn" class="btn-power">+Power</button>
+                <button id="shootBtn" class="btn-shoot" disabled>SHOOT</button>
+            </div>
+        </div>
+
+        <div class="game-wrapper">
+            <canvas id="gameCanvas" width="1000" height="600"></canvas>
+            <div id="powerMeter" class="power-meter">
+                <div id="powerBar" class="power-bar"></div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="player-stats">
+                <h3>Player 1 (Solids)</h3>
+                <p>Balls: <span id="p1Balls">0</span>/7</p>
+                <p>Status: <span id="p1Status">-</span></p>
+            </div>
+            <div class="player-stats">
+                <h3>Player 2 (Stripes)</h3>
+                <p>Balls: <span id="p2Balls">0</span>/7</p>
+                <p>Status: <span id="p2Status">-</span></p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <p><strong>Controls:</strong></p>
+            <ul>
+                <li>Click and drag the white ball to aim</li>
+                <li>Click "+Power" to increase shot power</li>
+                <li>Click "SHOOT" to take your shot</li>
+                <li>First player to pocket all their balls wins!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="pool-game.js"></script>
+</body>
+</html>
