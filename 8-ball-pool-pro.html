@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎱 8 Ball Pool - Pro Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e90ff;
+            --secondary: #ff6b6b;
+            --success: #00d084;
+            --warning: #ffaa00;
+            --dark: #0a0e27;
+            --darker: #050812;
+            --light: #eaeaea;
+            --border: #333;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            color: var(--light);
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header with logo and resources */
+        .header {
+            background: linear-gradient(90deg, rgba(30, 57, 114, 0.9), rgba(42, 82, 152, 0.9));
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1e90ff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffaa00;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        .resources {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .resource-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #1e90ff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9em;
+        }
+
+        .resource-icon {
+            font-size: 1.2em;
+        }
+
+        .resource-value {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(30,144,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)" /></svg>');
+        }
+
+        /* Top Info Banner */
+        .top-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .banner-item {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #1e90ff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        .banner-item-title {
+            font-size: 0.85em;
+            color: #ffaa00;
+            font-weight: bold;
+            margin-bottom: 5px;
+            z-index: 1;
+        }
+
+        .banner-item-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ff00;
+            z-index: 1;
+        }
+
+        .banner-item-subtitle {
+            font-size: 0.75em;
+            color: #ccc;
+            z-index: 1;
+        }
+
+        /* Game Modes Grid */
+        .game-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mode-button {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 2px solid #1e90ff;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mode-button:hover {
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .mode-button.special {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff9900 100%);
+            border-color: #ffaa00;
+        }
+
+        .mode-button.event {
+            background: linear-gradient(135deg, #a020f0 0%, #d820ff 100%);
+            border-color: #d820ff;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(216, 32, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(216, 32, 255, 0.7); }
+        }
+
+        .mode-icon {
+            font-size: 2em;
+        }
+
+        .mode-label {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .mode-subtitle {
+            font-size: 0.8em;
+            color: #ddd;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-size: 0.9em;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0 15px 0;
+            color: #ffaa00;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+            border-bottom: 2px solid #1e90ff;
+            padding-bottom: 10px;
+        }
+
+        /* Bottom Menu */
+        .bottom-menu {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background: linear-gradient(90deg, rgba(30, 57, 114, 0.9), rgba(42, 82, 152, 0.9));
+            border-top: 2px solid #1e90ff;
+        }
+
+        .menu-button {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .menu-button:hover {
+            border-color: #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .menu-button.active {
+            background: linear-gradient(135deg, #1e90ff 0%, #1575ff 100%);
+            border-color: #ffaa00;
+        }
+
+        .menu-icon {
+            font-size: 1.5em;
+        }
+
+        .menu-label {
+            font-size: 0.8em;
+        }
+
+        /* Rewards Grid */
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .reward-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 2px solid #1e90ff;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .reward-box:hover {
+            border-color: #00d084;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(0, 208, 132, 0.3);
+        }
+
+        .reward-icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .reward-label {
+            font-size: 0.9em;
+            color: #ddd;
+            margin-bottom: 5px;
+        }
+
+        .reward-amount {
+            font-size: 1.3em;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .timer {
+            font-size: 0.75em;
+            color: #ffaa00;
+            margin-top: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .game-modes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bottom-menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .menu-label {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Scrollbar styling */
+        .main-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: #1e90ff;
+            border-radius: 10px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span>🎱</span>
+                <span>8 POOL</span>
+            </div>
+            <div class="resources">
+                <div class="resource-item">
+                    <span class="resource-icon">👤</span>
+                    <span>Mohd</span>
+                    <span class="resource-value">1382/1490</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">🏆</span>
+                    <span class="resource-value">10990/11900</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">💰</span>
+                    <span class="resource-value">51</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">🎁</span>
+                    <span class="resource-value">6</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">⭐</span>
+                    <span class="resource-value">292,533,991</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Banner -->
+            <div class="top-banner">
+                <div class="banner-item">
+                    <div class="banner-item-title">🎁 BREAK NOW!</div>
+                    <div class="banner-item-value">713.6k</div>
+                </div>
+                <div class="banner-item">
+                    <div class="banner-item-title">📅 DAILY REWARDS</div>
+                    <div class="banner-item-subtitle">Next in 17h 26m 16s</div>
+                </div>
+                <div class="banner-item">
+                    <div class="banner-item-title">💎 TREASURE TROVE</div>
+                    <div class="banner-item-subtitle">17h 26m 16s</div>
+                </div>
+                <div class="banner-item">
+                    <div class="banner-item-title">✉️ MAIL</div>
+                    <div class="banner-item-value">NEW</div>
+                </div>
+            </div>
+
+            <!-- Game Modes Section -->
+            <div class="section-title">🎮 PLAY NOW</div>
+            <div class="game-modes">
+                <div class="mode-button">
+                    <div class="mode-icon">🎱</div>
+                    <div class="mode-label">Play<br>1 on 1</div>
+                </div>
+                <div class="mode-button event">
+                    <div class="badge">!</div>
+                    <div class="mode-icon">⚡</div>
+                    <div class="mode-label">Play<br>Events</div>
+                </div>
+                <div class="mode-button special">
+                    <div class="mode-icon">🎯</div>
+                    <div class="mode-label">15 YEARS<br>QUEST</div>
+                </div>
+                <div class="mode-button">
+                    <div class="mode-icon">🌟</div>
+                    <div class="mode-label">Play<br>Special</div>
+                </div>
+                <div class="mode-button">
+                    <div class="mode-icon">🎲</div>
+                    <div class="mode-label">Play<br>Minigames</div>
+                </div>
+            </div>
+
+            <!-- Rewards Section -->
+            <div class="section-title">🎁 DAILY REWARDS</div>
+            <div class="rewards-grid">
+                <div class="reward-box">
+                    <div class="reward-icon">📦</div>
+                    <div class="reward-label">OPEN</div>
+                    <div class="timer">Ready!</div>
+                </div>
+                <div class="reward-box">
+                    <div class="reward-icon">2️⃣</div>
+                    <div class="reward-label">REWARD 2</div>
+                    <div class="timer">1h 29m</div>
+                </div>
+                <div class="reward-box">
+                    <div class="reward-icon">3️⃣</div>
+                    <div class="reward-label">Jakarta</div>
+                    <div class="timer">1h 30m</div>
+                </div>
+                <div class="reward-box">
+                    <div class="reward-icon">4️⃣</div>
+                    <div class="reward-label">Jakarta</div>
+                    <div class="timer">1h 30m</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-title">⚡ QUICK ACTIONS</div>
+            <div class="game-modes">
+                <div class="mode-button">
+                    <div class="mode-icon">🎁</div>
+                    <div class="mode-label">Gifts</div>
+                </div>
+                <div class="mode-button">
+                    <div class="mode-icon">👥</div>
+                    <div class="mode-label">Friends</div>
+                </div>
+                <div class="mode-button">
+                    <div class="badge">8</div>
+                    <div class="mode-icon">📨</div>
+                    <div class="mode-label">Invite</div>
+                </div>
+                <div class="mode-button">
+                    <div class="mode-icon">🏪</div>
+                    <div class="mode-label">Shop</div>
+                </div>
+                <div class="mode-button">
+                    <div class="mode-icon">🎯</div>
+                    <div class="mode-label">Events</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Menu -->
+        <div class="bottom-menu">
+            <div class="menu-button active">
+                <div class="menu-icon">🏠</div>
+                <div class="menu-label">Home</div>
+            </div>
+            <div class="menu-button">
+                <div class="menu-icon">🎱</div>
+                <div class="menu-label">Play</div>
+            </div>
+            <div class="menu-button">
+                <div class="menu-icon">🏆</div>
+                <div class="menu-label">Rank</div>
+            </div>
+            <div class="menu-button">
+                <div class="menu-icon">⚙️</div>
+                <div class="menu-label">Shop</div>
+            </div>
+            <div class="menu-button">
+                <div class="menu-icon">👤</div>
+                <div class="menu-label">Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add click interactions
+        document.querySelectorAll('.mode-button, .reward-box, .menu-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log('Clicked:', this.textContent);
+            });
+        });
+
+        // Update timers
+        function updateTimers() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+        }
+
+        setInterval(updateTimers, 1000);
+        updateTimers();
+    </script>
+</body>
+</html>
