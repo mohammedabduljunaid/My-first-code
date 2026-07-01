@@ -17,6 +17,7 @@ A fully functional 8 Ball Pool game built with HTML5 Canvas and vanilla JavaScri
 - Win condition (pocket 8 ball last)
 
 🎨 **Visual Design**
+- light blue table
 - Beautiful green felt table
 - Numbered ball display
 - Real-time statistics
