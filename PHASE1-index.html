@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Ball Pool - Phase 1: Enhanced Single Player</title>
+    <link rel="stylesheet" href="phase1-style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎱 8 Ball Pool - Enhanced Edition</h1>
+            <p>Phase 1: Advanced Single-Player with AI</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Game Mode Selection -->
+            <div class="mode-selector" id="modeSelector">
+                <h2>Select Game Mode</h2>
+                <div class="modes">
+                    <button class="mode-btn" data-mode="practice">
+                        <span class="icon">📚</span>
+                        <span class="label">Practice</span>
+                        <span class="desc">Play casually</span>
+                    </button>
+                    <button class="mode-btn" data-mode="tournament">
+                        <span class="icon">🏆</span>
+                        <span class="label">Tournament</span>
+                        <span class="desc">Best of 5</span>
+                    </button>
+                    <button class="mode-btn" data-mode="ai-easy">
+                        <span class="icon">🤖</span>
+                        <span class="label">AI (Easy)</span>
+                        <span class="desc">Easy opponent</span>
+                    </button>
+                    <button class="mode-btn" data-mode="ai-hard">
+                        <span class="icon">🤖🔥</span>
+                        <span class="label">AI (Hard)</span>
+                        <span class="desc">Tough opponent</span>
+                    </button>
+                    <button class="mode-btn" data-mode="custom">
+                        <span class="icon">⚙️</span>
+                        <span class="label">Custom</span>
+                        <span class="desc">Custom settings</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customization Panel -->
+            <div class="customization" id="customizationPanel" style="display:none;">
+                <h2>Customize Game</h2>
+                <div class="custom-options">
+                    <div class="option">
+                        <label>Cue Style:</label>
+                        <select id="cueSelect">
+                            <option value="classic">Classic</option>
+                            <option value="premium">Premium</option>
+                            <option value="exotic">Exotic</option>
+                            <option value="neon">Neon</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <label>Table Style:</label>
+                        <select id="tableSelect">
+                            <option value="classic">Classic Green</option>
+                            <option value="blue">Blue Felt</option>
+                            <option value="red">Red Felt</option>
+                            <option value="purple">Purple Felt</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <label>Ball Design:</label>
+                        <select id="ballSelect">
+                            <option value="classic">Classic</option>
+                            <option value="glossy">Glossy</option>
+                            <option value="matte">Matte</option>
+                            <option value="neon">Neon</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <label>Difficulty:</label>
+                        <select id="difficultySelect">
+                            <option value="1">Very Easy</option>
+                            <option value="2">Easy</option>
+                            <option value="3">Medium</option>
+                            <option value="4">Hard</option>
+                            <option value="5">Pro</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="start-btn" id="startCustomBtn">Start Game</button>
+            </div>
+
+            <!-- Game Canvas -->
+            <div class="game-area" id="gameArea" style="display:none;">
+                <div class="game-header">
+                    <div class="game-info-left">
+                        <h3 id="gameMode">Practice Mode</h3>
+                        <p id="playerInfo">Player 1 vs AI</p>
+                    </div>
+                    <div class="game-controls">
+                        <button id="undoBtn" class="btn-secondary">↶ Undo</button>
+                        <button id="resetBtn" class="btn-secondary">🔄 Reset</button>
+                        <button id="menuBtn" class="btn-secondary">☰ Menu</button>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="gameCanvas" width="1000" height="600"></canvas>
+                    <div class="power-display">
+                        <div class="power-meter">
+                            <div id="powerBar" class="power-bar"></div>
+                        </div>
+                        <span id="powerText">0%</span>
+                    </div>
+                    <div class="spin-control">
+                        <div class="spin-grid">
+                            <button class="spin-btn" data-spin="topspin">↑</button>
+                            <button class="spin-btn" data-spin="backspin">↓</button>
+                            <button class="spin-btn" data-spin="left">←</button>
+                            <button class="spin-btn" data-spin="right">→</button>
+                        </div>
+                        <p>Spin Control</p>
+                    </div>
+                </div>
+
+                <div class="game-stats">
+                    <div class="player-stats">
+                        <h4>Player 1 (You)</h4>
+                        <p>Type: <span id="p1Type">-</span></p>
+                        <p>Pocketed: <span id="p1Pocketed">0</span>/7</p>
+                        <p>Status: <span id="p1Status">Waiting</span></p>
+                    </div>
+                    <div class="center-info">
+                        <div id="turnIndicator" class="turn-indicator">Your Turn</div>
+                        <div id="gameStatus" class="game-status">Ready</div>
+                    </div>
+                    <div class="player-stats">
+                        <h4>Player 2 (AI/Opponent)</h4>
+                        <p>Type: <span id="p2Type">-</span></p>
+                        <p>Pocketed: <span id="p2Pocketed">0</span>/7</p>
+                        <p>Status: <span id="p2Status">Waiting</span></p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="shootBtn" class="btn-primary" disabled>🎯 SHOOT</button>
+                    <button id="cancelBtn" class="btn-secondary">Cancel Aim</button>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard" id="leaderboardPanel" style="display:none;">
+                <h2>🏆 Local Leaderboard</h2>
+                <div class="lb-container">
+                    <table class="lb-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Wins</th>
+                                <th>Win Rate</th>
+                                <th>Best Streak</th>
+                                <th>Avg Balls/Game</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lbBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <button id="clearLBBtn" class="btn-secondary">Clear Leaderboard</button>
+                <button id="backToMenuBtn" class="btn-primary">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-modal" id="settingsModal" style="display:none;">
+            <div class="modal-content">
+                <h2>Settings</h2>
+                <div class="settings-group">
+                    <label>
+                        <input type="checkbox" id="soundToggle" checked>
+                        Sound Effects
+                    </label>
+                    <label>
+                        <input type="checkbox" id="musicToggle" checked>
+                        Background Music
+                    </label>
+                    <label>
+                        <input type="checkbox" id="aimGuideToggle" checked>
+                        Show Aim Guide
+                    </label>
+                    <label>
+                        <input type="checkbox" id="physicsDebugToggle">
+                        Physics Debug
+                    </label>
+                </div>
+                <button id="closeSettingsBtn" class="btn-primary">Close</button>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-modal" id="resultsModal" style="display:none;">
+            <div class="modal-content">
+                <h2 id="resultTitle">You Win!</h2>
+                <div class="result-stats">
+                    <p id="resultMessage">Congratulations!</p>
+                    <div class="stats-detail">
+                        <p>Balls Pocketed: <strong id="resultBalls">7</strong></p>
+                        <p>Shots Taken: <strong id="resultShots">12</strong></p>
+                        <p>Time: <strong id="resultTime">2:34</strong></p>
+                        <p>Accuracy: <strong id="resultAccuracy">58%</strong></p>
+                    </div>
+                </div>
+                <div class="result-buttons">
+                    <button id="playAgainBtn" class="btn-primary">Play Again</button>
+                    <button id="mainMenuBtn" class="btn-secondary">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="phase1-game.js"></script>
+    <script src="phase1-physics.js"></script>
+    <script src="phase1-ai.js"></script>
+    <script src="phase1-ui.js"></script>
+</body>
+</html>

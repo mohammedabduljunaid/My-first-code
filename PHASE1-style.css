@@ -1,0 +1,562 @@
+/* Phase 1: Enhanced Single-Player CSS */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #1e90ff;
+    --secondary: #ff6b6b;
+    --success: #00d084;
+    --warning: #ffaa00;
+    --dark: #1a1a2e;
+    --darker: #0f0f1e;
+    --light: #eaeaea;
+    --border: #333;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+    color: var(--light);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border);
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #1e90ff, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header p {
+    color: #999;
+    font-size: 1.1em;
+}
+
+/* Mode Selector */
+.mode-selector {
+    margin-bottom: 40px;
+}
+
+.mode-selector h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+.modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 25px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+}
+
+.mode-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+}
+
+.mode-btn .icon {
+    font-size: 2.5em;
+}
+
+.mode-btn .label {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.mode-btn .desc {
+    font-size: 0.85em;
+    color: #bbb;
+}
+
+/* Customization Panel */
+.customization {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.customization h2 {
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+.custom-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.option label {
+    font-weight: bold;
+    color: #ccc;
+}
+
+.option select {
+    padding: 10px;
+    background: var(--darker);
+    border: 2px solid var(--border);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.option select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Game Area */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 12px;
+}
+
+.game-info-left h3 {
+    margin-bottom: 5px;
+    color: var(--primary);
+}
+
+.game-info-left p {
+    color: #999;
+    font-size: 0.95em;
+}
+
+.game-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* Canvas Wrapper */
+.canvas-wrapper {
+    position: relative;
+    background: #0a4d0a;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameCanvas {
+    background: #0d6b0d;
+    border: 3px solid #333;
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.power-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 150px;
+}
+
+.power-meter {
+    height: 30px;
+    background: #333;
+    border: 2px solid #666;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.power-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ff00, #ffaa00, #ff0000);
+    transition: width 0.1s;
+}
+
+#powerText {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.spin-control {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.spin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 40px);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.spin-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: all 0.2s;
+}
+
+.spin-btn:hover {
+    background: #1575ff;
+    transform: scale(1.1);
+}
+
+.spin-btn.active {
+    background: var(--success);
+}
+
+.spin-control p {
+    font-size: 0.85em;
+    color: #999;
+}
+
+/* Game Stats */
+.game-stats {
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 12px;
+}
+
+.player-stats {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.player-stats h4 {
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.player-stats p {
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #ccc;
+}
+
+.center-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.turn-indicator {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--success);
+    padding: 10px 20px;
+    background: rgba(0, 208, 132, 0.2);
+    border-radius: 6px;
+}
+
+.game-status {
+    font-size: 0.95em;
+    color: #999;
+    text-align: center;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #1575ff);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--light);
+    border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.start-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary), #1575ff);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.action-buttons button {
+    min-width: 150px;
+}
+
+/* Leaderboard */
+.leaderboard {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.leaderboard h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.lb-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.lb-table thead {
+    background: rgba(30, 144, 255, 0.2);
+}
+
+.lb-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+}
+
+.lb-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.lb-table tr:hover {
+    background: rgba(30, 144, 255, 0.1);
+}
+
+/* Modals */
+.settings-modal, .results-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+.settings-group {
+    margin-bottom: 20px;
+}
+
+.settings-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.settings-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.result-stats {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#resultTitle {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: var(--success);
+}
+
+#resultMessage {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.stats-detail {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.stats-detail p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.result-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.result-buttons button {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .modes {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .game-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .canvas-wrapper {
+        flex-direction: column;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+}
